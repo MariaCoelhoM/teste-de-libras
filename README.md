@@ -27,7 +27,13 @@ templates/index.html                                  pagina da demo (modo estat
 ## 1. Instalar dependencias
 
 ```bash
-pip install -r requirements.txt
+pip install uv
+uv venv --python 3.11 .venv
+source .venv/bin/activate
+python --version   # deve mostrar 3.11.x
+uv pip install -r requirements.txt
+uv pip uninstall opencv-python opencv-contrib-python
+uv pip install opencv-python-headless==4.10.0.84
 ```
 
 As versoes em `requirements.txt` sao um ponto de partida - se o `pip install`
