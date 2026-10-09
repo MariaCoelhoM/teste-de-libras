@@ -1,6 +1,4 @@
 import argparse
-import csv
-from collections import Counter
 
 import numpy as np
 import tensorflow as tf
@@ -8,33 +6,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import LabelEncoder
 from sklearn.metrics import classification_report, confusion_matrix
 
-
-def load_class_filter(classes_arg):
-    """--classes pode ser uma lista separada por virgula, ou @arquivo.txt (uma classe por linha)."""
-    if classes_arg is None:
-        return None
-    if classes_arg.startswith("@"):
-        with open(classes_arg[1:], encoding="utf-8") as f:
-            return {line.strip() for line in f if line.strip()}
-    return {c.strip() for c in classes_arg.split(",") if c.strip()}
-
-
-def log_counts(label, y_raw_subset, counts_by_split):
-    counts = Counter(y_raw_subset.tolist())
-    print(f"\nContagem de amostras - {label}:")
-    for classe, n in sorted(counts.items()):
-        print(f"  {classe}: {n}")
-    counts_by_split[label] = counts
-
-
-def save_counts_csv(path, counts_by_split):
-    with open(path, "w", newline="", encoding="utf-8") as f:
-        writer = csv.writer(f)
-        writer.writerow(["divisao", "classe", "quantidade"])
-        for split_name, counts in counts_by_split.items():
-            for classe, n in sorted(counts.items()):
-                writer.writerow([split_name, classe, n])
-    print(f"\nContagem de amostras salva em {path}")
+from libras.training_utils import load_class_filter, log_counts, save_counts_csv
 
 
 def build_model(num_points, num_channels, num_classes):
@@ -162,4 +134,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-    
